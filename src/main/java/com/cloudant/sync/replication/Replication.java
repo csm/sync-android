@@ -38,8 +38,13 @@ abstract class Replication {
     /**
      * Describe "Filter Function" used in {@code PullReplication}.
      * It includes the name of the function, and the query
-     * parameters of the functions.
+     * parameters for the function. For example:
      *
+     * {@code
+     *     Filter filter = new Filter( "filerDoc/filterName", ImmutableMap.of("key", "value"));
+     * }
+     *
+     * @see com.cloudant.sync.replication.PullReplication
      * @see http://docs.couchdb.org/en/1.4.x/replication.html#controlling-which-documents-to-replicate
      * @see http://docs.couchdb.org/en/1.4.x/ddocs.html#filterfun
      */
@@ -59,10 +64,22 @@ abstract class Replication {
          */
         public Map<String, String> parameters;
 
+        /**
+         * Construct a filter without any parameters
+         *
+         * @param name of the filter function
+         */
         public Filter(String name) {
             this.name = name;
         }
 
+        /**
+         * Construct a filter with filter function name and query parameters.
+         * The query parameters should not be escaped.
+         *
+         * @param name filter function name
+         * @param parameters filter function parameters
+         */
         public Filter(String name, Map<String, String> parameters) {
             this.name = name;
             this.parameters = parameters;
