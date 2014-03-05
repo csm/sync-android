@@ -298,21 +298,7 @@ class BasicPullStrategy implements ReplicationStrategy {
         if(filter == null) {
             return this.sourceDb.getIdentifier() ;
         } else {
-            return this.sourceDb.getIdentifier() + "?" + this.toString(filter);
-        }
-    }
-
-    private String toString(Replication.Filter filter) {
-        if(filter.parameters == null) {
-            return String.format("filter=%s", this.name);
-        } else {
-            List<String> queries = new ArrayList<String>();
-            for(Map.Entry<String, String> parameter : filter.parameters.entrySet()) {
-                queries.add(String.format("%s=%s", parameter.getKey(), parameter.getValue()));
-            }
-            Collections.sort(queries);
-            return String.format("filter=%s&%s", this.name,
-                    Joiner.on('&').skipNulls().join(queries));
+            return this.sourceDb.getIdentifier() + "?" + filter.toString();
         }
     }
 

@@ -84,6 +84,21 @@ abstract class Replication {
             this.name = name;
             this.parameters = parameters;
         }
+
+        @Override
+        public String toString() {
+            if(this.parameters == null) {
+                return String.format("filter=%s", this.name);
+            } else {
+                List<String> queries = new ArrayList<String>();
+                for(Map.Entry<String, String> parameter : this.parameters.entrySet()) {
+                    queries.add(String.format("%s=%s", parameter.getKey(), parameter.getValue()));
+                }
+                Collections.sort(queries);
+                return String.format("filter=%s&%s", this.name,
+                        Joiner.on('&').skipNulls().join(queries));
+            }
+        }
     }
 
     CouchConfig createCouchConfig(URI uri, String username, String password) {
