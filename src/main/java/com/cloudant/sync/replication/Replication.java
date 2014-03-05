@@ -35,8 +35,28 @@ abstract class Replication {
 
     public abstract ReplicationStrategy createReplicationStrategy();
 
+    /**
+     * Describe "Filter Function" used in {@code PullReplication}.
+     * It includes the name of the function, and the query
+     * parameters of the functions.
+     *
+     * @see http://docs.couchdb.org/en/1.4.x/replication.html#controlling-which-documents-to-replicate
+     * @see http://docs.couchdb.org/en/1.4.x/ddocs.html#filterfun
+     */
     public static class Filter {
+
+        /**
+         * Name of the "Filter Function", indicates which function will
+         * be called for this filter.
+         */
         public String name;
+
+        /**
+         * Query parameters, which will be put as part of the "request"
+         * when filter function is called.
+         *
+         * @see @see http://docs.couchdb.org/en/1.4.x/ddocs.html#filterfun
+         */
         public Map<String, String> parameters;
 
         public Filter(String name) {
@@ -46,21 +66,6 @@ abstract class Replication {
         public Filter(String name, Map<String, String> parameters) {
             this.name = name;
             this.parameters = parameters;
-        }
-
-        @Override
-        public String toString() {
-            if(this.parameters == null) {
-                return String.format("filter=%s", this.name);
-            } else {
-                List<String> queries = new ArrayList<String>();
-                for(Map.Entry<String, String> parameter : this.parameters.entrySet()) {
-                    queries.add(String.format("%s=%s", parameter.getKey(), parameter.getValue()));
-                }
-                Collections.sort(queries);
-                return String.format("filter=%s&%s", this.name,
-                        Joiner.on('&').skipNulls().join(queries));
-            }
         }
     }
 

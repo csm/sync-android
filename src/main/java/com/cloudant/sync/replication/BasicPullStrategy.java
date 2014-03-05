@@ -20,6 +20,7 @@ import com.cloudant.mazha.CouchConfig;
 import com.cloudant.sync.datastore.DatastoreExtended;
 import com.cloudant.sync.datastore.DocumentRevsList;
 import com.cloudant.sync.util.JSONUtils;
+import com.google.common.base.Joiner;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Multimap;
@@ -27,6 +28,7 @@ import com.google.common.eventbus.EventBus;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.Callable;
@@ -296,7 +298,21 @@ class BasicPullStrategy implements ReplicationStrategy {
         if(filter == null) {
             return this.sourceDb.getIdentifier() ;
         } else {
-            return this.sourceDb.getIdentifier() + "?" + filter.toString();
+            return this.sourceDb.getIdentifier() + "?" + this.toString(filter);
+        }
+    }
+
+    private String toString(Replication.Filter filter) {
+        if(filter.parameters == null) {
+            return String.format("filter=%s", this.name);
+        } else {
+            List<String> queries = new ArrayList<String>();
+            for(Map.Entry<String, String> parameter : filter.parameters.entrySet()) {
+                queries.add(String.format("%s=%s", parameter.getKey(), parameter.getValue()));
+            }
+            Collections.sort(queries);
+            return String.format("filter=%s&%s", this.name,
+                    Joiner.on('&').skipNulls().join(queries));
         }
     }
 
