@@ -85,8 +85,19 @@ abstract class Replication {
             this.parameters = parameters;
         }
 
-        @Override
-        public String toString() {
+        /**
+         * Generated {@code String} should not be used in URL as request
+         * query as they are not properly escaped.
+         *
+         * Filter parameters are sorted by key so that the  generated
+         * String are the same for different calls. This is imporant
+         * because the String is part of the replication id.
+         *
+         * @return String can use to display the filter name and parameters.
+         *
+         * @see BasicPullStrategy#getReplicationId() 
+         */
+        public String toQueryString() {
             if(this.parameters == null) {
                 return String.format("filter=%s", this.name);
             } else {

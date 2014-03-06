@@ -298,7 +298,7 @@ class BasicPullStrategy implements ReplicationStrategy {
         if(filter == null) {
             return this.sourceDb.getIdentifier() ;
         } else {
-            return this.sourceDb.getIdentifier() + "?" + filter.toString();
+            return this.sourceDb.getIdentifier() + "?" + filter.toQueryString();
         }
     }
 
