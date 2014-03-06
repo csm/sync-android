@@ -280,7 +280,6 @@ public class BasicPullStrategyTest extends ReplicationTestBase {
         for(String mammal : birds) {
             Assert.assertTrue(datastore.containsDocument(mammal));
         }
-
     }
 
     @Test
@@ -300,4 +299,50 @@ public class BasicPullStrategyTest extends ReplicationTestBase {
         }
     }
 
+    @Test
+    public void pull_filterSmallFromAnimalDbUsingIntegerFilter_eightDocShouldBePulled()
+            throws Exception {
+        Assert.assertEquals(0, datastore.getDocumentCount());
+
+        AnimalDb.populate(remoteDb.couchClient);
+        Replication.Filter filter = new Replication.Filter("animal/small",
+                ImmutableMap.of("max_length", "2"));
+        this.pull(filter);
+
+        Assert.assertEquals(6, datastore.getDocumentCount());
+        String[] mammals = {"badger", "kookaburra", "lemur", "llama", "panda", "snipe"};
+        for(String mammal : mammals) {
+            Assert.assertTrue(mammal + " should be in the datastore", datastore.containsDocument(mammal));
+        }
+    }
+
+    @Test
+    public void pull_filterSmallFromAnimalDbUsingNullFilter_eightDocShouldBePulled()
+            throws Exception {
+        Assert.assertEquals(0, datastore.getDocumentCount());
+
+        AnimalDb.populate(remoteDb.couchClient);
+        Replication.Filter filter = new Replication.Filter("animal/by_chinese_name",
+                ImmutableMap.of("chinese_name", "\u718a\u732b"));
+        this.pull(filter);
+
+        Assert.assertEquals(1, datastore.getDocumentCount());
+        String[] mammals = {"panda"};
+        for(String mammal : mammals) {
+            Assert.assertTrue(mammal + " should be in the datastore", datastore.containsDocument(mammal));
+        }
+    }
+
+    @Test
+    public void pull_emptyFilterKey_noDocReturned()
+            throws Exception {
+        Assert.assertEquals(0, datastore.getDocumentCount());
+
+        AnimalDb.populate(remoteDb.couchClient);
+        Replication.Filter filter = new Replication.Filter("animal/by_chinese_name",
+                ImmutableMap.of("", "\u718a\u732b"));
+        this.pull(filter);
+
+        Assert.assertEquals(0, datastore.getDocumentCount());
+    }
 }

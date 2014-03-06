@@ -7,5 +7,6 @@
    "min_length": 1.2,
    "max_length": 1.8,
    "class": "mammal",
+   "chinese_name": "熊猫",
    "diet": "carnivore"
 }
