@@ -318,10 +318,6 @@ class BasicPullStrategy implements ReplicationStrategy {
                                                         Map<String, Collection<String>> revisions) {
         List<Callable<DocumentRevsList>> tasks = new ArrayList<Callable<DocumentRevsList>>();
         for(String id : ids) {
-            if(id.startsWith("_")) {
-                continue;
-            }
-
             tasks.add(GetRevisionTask.createGetRevisionTask(this.sourceDb,
                     id, revisions.get(id).toArray(new String[]{})));
         }
