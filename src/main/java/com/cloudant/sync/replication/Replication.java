@@ -39,10 +39,22 @@ abstract class Replication {
     /**
      * Describe "Filter Function" used in {@code PullReplication}.
      * It includes the name of the function, and the query
-     * parameters for the function. For example:
+     * parameters for the function.
+     *
+     * The name includes doc name and filter function name. For example
+     * "filterDoc/filterFunctionName" is a filter from doc "filterDoc"
+     * and the function name is "filterFunctionName".
      *
      * {@code
-     *     Filter filter = new Filter( "filterDoc/filterName", ImmutableMap.of("key", "value"));
+     *     Filter filter = new Filter("filterDoc/filterFunctionName")
+     * }
+     *
+     * Query parameter is a {@code ImmutableMap<String, String>}.
+     * Integer value should be put as String as well. For example:
+     *
+     * {@code
+     *     Filter filter = new Filter("doc/filterName"),
+     *         ImmutableMap.of("max_age", "10"));
      * }
      *
      * @see com.cloudant.sync.replication.PullReplication
