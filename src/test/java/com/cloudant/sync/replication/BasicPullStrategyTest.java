@@ -284,7 +284,7 @@ public class BasicPullStrategyTest extends ReplicationTestBase {
     }
 
     @Test
-    public void pull_filterMammalFromAnimalDbUsingParameterizedFitler_twoDocShouldBePulled()
+    public void pull_filterMammalFromAnimalDbUsingParameterizedFilter_eightDocShouldBePulled()
             throws Exception {
         Assert.assertEquals(0, datastore.getDocumentCount());
 
