@@ -95,7 +95,7 @@ abstract class Replication {
          *
          * @return String can use to display the filter name and parameters.
          *
-         * @see BasicPullStrategy#getReplicationId() 
+         * @see BasicPullStrategy#getReplicationId()
          */
         public String toQueryString() {
             if(this.parameters == null) {
