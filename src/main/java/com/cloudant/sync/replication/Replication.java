@@ -3,6 +3,7 @@ package com.cloudant.sync.replication;
 import com.cloudant.mazha.CouchConfig;
 import com.google.common.base.Joiner;
 import com.google.common.base.Preconditions;
+import com.google.common.collect.ImmutableMap;
 
 import java.net.URI;
 import java.util.ArrayList;
@@ -54,7 +55,7 @@ abstract class Replication {
          * Name of the "Filter Function", indicates which function will
          * be called for this filter.
          */
-        public String name;
+        public final String name;
 
         /**
          * Query parameters, which will be put as part of the "request"
@@ -62,7 +63,7 @@ abstract class Replication {
          *
          * @see @see http://docs.couchdb.org/en/1.4.x/ddocs.html#filterfun
          */
-        public Map<String, String> parameters;
+        public final ImmutableMap<String, String> parameters;
 
         /**
          * Construct a filter without any parameters
@@ -71,6 +72,7 @@ abstract class Replication {
          */
         public Filter(String name) {
             this.name = name;
+            this.parameters = null;
         }
 
         /**
@@ -80,7 +82,7 @@ abstract class Replication {
          * @param name filter function name
          * @param parameters filter function parameters
          */
-        public Filter(String name, Map<String, String> parameters) {
+        public Filter(String name, ImmutableMap<String, String> parameters) {
             this.name = name;
             this.parameters = parameters;
         }
