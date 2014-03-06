@@ -42,7 +42,7 @@ abstract class Replication {
      * parameters for the function. For example:
      *
      * {@code
-     *     Filter filter = new Filter( "filerDoc/filterName", ImmutableMap.of("key", "value"));
+     *     Filter filter = new Filter( "filterDoc/filterName", ImmutableMap.of("key", "value"));
      * }
      *
      * @see com.cloudant.sync.replication.PullReplication
